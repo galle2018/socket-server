@@ -1,4 +1,5 @@
 import {Router, Request, Response} from 'express';
+import Server from '../classes/server';
 
 const router = Router();
 
@@ -13,17 +14,35 @@ router.get('/mensajes', (req: Request, res: Response) => {
         mensaje: 'Todo esta bien!!!'
     });
 });
-// INICIO DEL GET -----------------------------------------------------
+// FIN DEL GET -----------------------------------------------------
 
 
 
 // INICIO DEL POST -----------------------------------------------------
 //cuando alguien haga una peticion http.post lo que este dentro de
 //de la carpeta /mesajes lo recibira 
-router.post('/mensajes', (req: Request, res: Response) => {
+//router.post('/mensajes/:id', (req: Request, res: Response) => {
+    router.post('/mensajes', (req: Request, res: Response) => {
 
     const cuerpo = req.body.cuerpo;
     const de = req.body.de;
+    //const id = req.params.id;
+
+    const payload = {de, cuerpo };
+
+    const server = Server.instance; 
+    server.io.emit('mensaje-nuevo', payload );
+
+    // const payload = {
+    //     de,
+    //     cuerpo
+    // }
+
+   // const server = Server.instance; 
+
+    // para enviar 1 msg a 1 o a todos los usuarios
+    // server.io.in( id ).emit('mensaje-privado', payload);
+    
  
     //envio un mensaje de respuesta
     res.json({
@@ -32,7 +51,7 @@ router.post('/mensajes', (req: Request, res: Response) => {
         de
     });
 });
-// INICIO DEL POST -----------------------------------------------------
+// FIN DEL POST -----------------------------------------------------
 
 
 

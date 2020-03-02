@@ -40,20 +40,41 @@ export default class Server {
 
     //para los sockets
     private escucharSockets(){
-        
+           
         console.log('Escuchando conexiones - sockets');
         
         this.io.on('connection', cliente => {
-            console.log('Cliente conectado');
+            //console.log('Cliente conectado');
+            console.log( 'ID de conexion: ' + cliente.id) ; // muestra el id de conexion del usuario
+           
+            
+        // -------------------------------------------------------    
+         
+            //  Conectar cliente
+            socket.conectarCliente( cliente );
+
+        // ------------------------------------------------------- 
+
+
+
+            // Configurar Usuario -------------------------
+            socket.configurarUsuario( cliente, this.io );
 
             //Mensajes
             socket.mensaje( cliente, this.io );
 
-            //Detectar cuando el cliente se desconecta
+
+
+            //Detectar cuando el cliente se desconecta ---------------------------
             // cliente.on('disconnect', ()=>{
             //     console.log('Cliente Desconectado');
             // }); //esta forma la use cuando hice directo
             socket.desconectar(cliente);//asi usando desde el socket.ts importado
+
+
+
+            
+
 
         })
 
